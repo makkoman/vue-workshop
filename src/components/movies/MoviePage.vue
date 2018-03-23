@@ -3,7 +3,7 @@
 
     <div class="container">
       <h1>My movies backlog</h1>
-      <p>{{message}}</p>
+
     </div>
 
     <movie-nav/>
@@ -46,9 +46,6 @@ export default {
     MovieFilter
   },
   computed: {
-    message () {
-      return this.$store.state.hello
-    },
     movies () {
       return this.$store.getters.movieCards
     },
