@@ -23,6 +23,10 @@
         class="btn btn-danger save-btn">
         Remove
       </a>
+      <router-link :to="{ name: 'movieDetail', params: { movie_id: id }}"
+         class="btn btn-primary details-btn">
+        See details
+      </router-link>
 
     </div>
   </div>
@@ -30,13 +34,15 @@
 
 <script>
 import MovieCardVoteAverage from './MovieCardVoteAverage'
-import {mapActions} from 'vuex'
+import backlogOperationMixin from '../../mixins/backlogOperationsMixin'
 
 export default {
   components: {
     MovieCardVoteAverage
   },
-
+  mixins: [
+    backlogOperationMixin
+  ],
   data () {
     return {
       imageError: false
@@ -88,13 +94,6 @@ export default {
       }
     },
   },
-
-  methods: {
-    ...mapActions({
-      saveMovie: 'saveMovie',
-      removeMovie: 'removeMovie'
-    })
-  }
 }
 </script>
 
@@ -140,4 +139,8 @@ export default {
 .save-btn {
   float: right;
 }
+  .details-btn{
+    clear: both;
+    float: right;
+  }
 </style>
