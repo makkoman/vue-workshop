@@ -5,14 +5,14 @@ Vue.use(Vuex)
 
 const store = {
   state: {
-    hello: 'world',
     movies: [],
     savedMovies: [],
     genres: [],
     selectedGenre: null,
     loading: false,
     currentPage: 1,
-    totalPages: 0
+    totalPages: 0,
+    selectedMovie: {},
   },
 
   actions: {
@@ -29,12 +29,19 @@ const store = {
       const genreData = await MovieService.getGenres()
       context.commit('setGenres', genreData.data)
     },
+    async loadMovie (context, movieId) {
+      const selectedMovie = await MovieService.getMovie(movieId)
+      context.commit('setMovie', selectedMovie.data)
+    },
     filterMovies (context, genreId) {
       context.commit('setGenre', genreId)
       context.dispatch('fetchMovies')
     },
     fetchPage (context, page) {
       context.dispatch('fetchMovies', page)
+    },
+    fetchMovie (context, movieId) {
+      context.dispatch('loadMovie', movieId)
     },
     saveMovie (context, movie) {
       context.commit('saveMovie', movie)
@@ -69,6 +76,9 @@ const store = {
     },
     setGenre (state, genreId) {
       state.selectedGenre = genreId
+    },
+    setMovie (state, movieInfo) {
+      state.selectedMovie = movieInfo
     },
     setLoading (state, value) {
       state.loading = value
@@ -105,7 +115,21 @@ const store = {
         .find(genre => genre.id === state.selectedGenre)
 
       return genre ? genre.name : null
-    }
+    },
+    movieSingle (state) {
+      const imageBasePath = 'http://image.tmdb.org/t/p/w370_and_h556_bestv2';
+      const movie = state.selectedMovie;
+      return {
+        id: movie.id,
+        image: `${imageBasePath}${movie.poster_path}`,
+        title: movie.title,
+        description: movie.overview,
+        voteAverage: movie.vote_average,
+        tagline: movie.tagline || '',
+        releaseDate: movie.release_date,
+        runtime: movie.runtime,
+      }
+    },
   }
 }
 export default new Vuex.Store(store)
