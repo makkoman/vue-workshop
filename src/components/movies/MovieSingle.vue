@@ -1,6 +1,7 @@
 <template>
   <div class="container mt-5">
-    <a href="#" @click="goBack">&lt;&lt;Back to movies</a>
+    <router-link to="/movies">&lt; Back to movies</router-link>
+
     <div class="row">
       <div class="col-3">
         <img :src="movie.image" :alt="movie.title" class="poster">
@@ -60,9 +61,6 @@
       ...mapActions({
         fetchMovie: 'fetchMovie',
       }),
-      goBack: function () {
-        this.$router.go(-1)
-      }
     }
   }
 </script>
